@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup as bs
-from splinter import Browserexecutable_path
+from splinter import Browser
 import requests
 import pandas as pd
 import time
@@ -7,8 +7,7 @@ import time
 def scrape():
     
     executable_path = {'executable_path': 'chromedriver.exe'}
-    print(**)
-
+ 
     browser = Browser('chrome', **executable_path, headless=False)    
     
     # create mars_data dict that we can insert into mongo
@@ -16,11 +15,11 @@ def scrape():
     mars_data = {}
 
     # visit NASA Mars News site and scrape headlines
-    nasa_url = "https://mars.nasa.gov/news/"
-    browser.visit(nasa_url)
+    news_url = "https://mars.nasa.gov/news/"
+    browser.visit(news_url)
     time.sleep(1)
-    nasa_html = browser.html
-    nasa_soup =bs(nasa_html, 'html.parser')
+    news_html = browser.html
+    news_soup =bs(news_html, 'html.parser')
 
 
     # Scrape the Latest News Title
@@ -38,6 +37,7 @@ def scrape():
     jpl_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(jpl_url)
     time.sleep(1)
+    
 
     # Ask Splinter to Go to Site and Click Button with Class Name full_image
     full_image_button = browser.find_by_id("full_image")
@@ -74,17 +74,13 @@ def scrape():
     ]
 
     scrape_data = {
-        "News Title": news_title, 
-        "News Paragraph": news_paragraph ,
-        "Image URL": img_url,
-        "Mars Data": mars_df,
-        "Hemisphere Image": img_url }
+        "news_title": news_title, 
+        "news_paragraph": news_paragraph ,
+        "image_URL": img_url,
+        "mars_data": mars_df_html,
+        "hemisphere_image": hemisphere_image_urls }
     
     return scrape_data
-
-scrape()
-
-
 
 
     
